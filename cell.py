@@ -1,12 +1,17 @@
 from graphics import Line, Point
 
+bg_color = "#1d3557"
+grid_color = "#457b9d"
+correct_path_color = "#e63946"
+reset_path_color = "#6d0d15"
 
 class Cell:
-    def __init__(self, win):
+    def __init__(self, win=None):
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
+        self.visited = False
         self._x1 = None
         self._x2 = None
         self._y1 = None
@@ -23,15 +28,27 @@ class Cell:
         if self.has_left_wall:
             line = Line(Point(x1, y1), Point(x1, y2))
             self._win.draw_line(line)
+        else:
+            line = Line(Point(x1, y1), Point(x1, y2))
+            self._win.draw_line(line, bg_color)
         if self.has_top_wall:
             line = Line(Point(x1, y1), Point(x2, y1))
             self._win.draw_line(line)
+        else:
+            line = Line(Point(x1, y1), Point(x2, y1))
+            self._win.draw_line(line, bg_color)
         if self.has_right_wall:
             line = Line(Point(x2, y1), Point(x2, y2))
             self._win.draw_line(line)
+        else:
+            line = Line(Point(x2, y1), Point(x2, y2))
+            self._win.draw_line(line, bg_color)
         if self.has_bottom_wall:
             line = Line(Point(x1, y2), Point(x2, y2))
             self._win.draw_line(line)
+        else:
+            line = Line(Point(x1, y2), Point(x2, y2))
+            self._win.draw_line(line, bg_color)
 
     def draw_move(self, to_cell, undo=False):
         if self._win is None:
@@ -42,9 +59,9 @@ class Cell:
         to_x_mid = (to_cell._x1 + to_cell._x2) / 2
         to_y_mid = (to_cell._y1 + to_cell._y2) / 2
 
-        fill_color = "red"
+        fill_color = correct_path_color
         if undo:
-            fill_color = "gray"
+            fill_color = reset_path_color
 
         # moving left
         if self._x1 > to_cell._x1:
